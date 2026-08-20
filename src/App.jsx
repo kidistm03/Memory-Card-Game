@@ -94,6 +94,7 @@ function App() {
         }));
 
         setCards(pokemonCards);
+        
       } catch (error) {
         console.error("Failed to load Pokémon:", error);
       } finally {
@@ -104,10 +105,32 @@ function App() {
     fetchPokemon();
   }, []);
   return (
-    <div className="app">
-      <h1>Memory Card Game</h1>
+  <div className="app">
+    <h1>Memory Card Game</h1>
+
+    <div className="score-board">
+      <p>Score: {score}</p>
+      <p>Best Score: {bestScore}</p>
     </div>
-  );
+
+    {isLoading ? (
+      <h2>Loading Pokémon...</h2>
+    ) : (
+      <div className="game-board">
+        {cards.map((card) => (
+          <div
+            key={card.id}
+            className="card"
+            onClick={() => handleCardClick(card.id)}
+          >
+            <img src={card.image} alt={card.name} />
+            <h3>{card.name}</h3>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+);
 }
 
 export default App;
