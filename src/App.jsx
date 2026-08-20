@@ -28,6 +28,37 @@ function App() {
 
     return array;
   }
+  function handleCardClick(id) {
+    // The card was already clicked
+    if (clickedIds.includes(id)) {
+      if (score > bestScore) {
+        setBestScore(score);
+      }
+
+      setScore(0);
+      setClickedIds([]);
+      setGameStatus("lost");
+    }
+
+    // This is a new card
+    else {
+      const newScore = score + 1;
+
+      setScore(newScore);
+
+      setClickedIds((prev) => [...prev, id]);
+
+      setCards((prev) => shuffle([...prev]));
+
+      if (newScore === cards.length) {
+        setGameStatus("won");
+
+        if (newScore > bestScore) {
+          setBestScore(newScore);
+        }
+      }
+    }
+  }
 
   return (
     <div className="app">
