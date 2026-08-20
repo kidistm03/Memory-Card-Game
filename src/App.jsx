@@ -3,6 +3,7 @@ import "./App.css";
 function App() {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [clickedCards, setClickedCards] = useState([]);
   function handleCardClick() {
     const newScore = score + 1;
     setScore(newScore);
