@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
+// Our card data
 const cards = [
   {
     id: 1,
@@ -35,29 +36,39 @@ const cards = [
     name: "Psyduck",
   },
 ];
+
 function App() {
+  // Score
   const [score, setScore] = useState(0);
+
+  // Highest score
   const [bestScore, setBestScore] = useState(0);
+  // Cards that the player has already clicked
   const [clickedCards, setClickedCards] = useState([]);
+  // create game card -Cards currently displayed
+  const [gameCards, setGameCards] = useState(cards);
+
+  // Runs when a card is clicked
   function handleCardClick(cardId) {
-    //to check if this array already contain this card ID
+    // Check if this card was already clicked
     if (clickedCards.includes(cardId)) {
       console.log("Game Over!");
       return;
     }
 
+    // Increase score
     const newScore = score + 1;
-
     setScore(newScore);
 
+    // Add the clicked card to our clicked cards
     setClickedCards([...clickedCards, cardId]);
 
-    console.log("Clicked cards:", clickedCards);
-
+    // Update best score
     if (newScore > bestScore) {
       setBestScore(newScore);
     }
   }
+
   return (
     <div className="app">
       <header>
