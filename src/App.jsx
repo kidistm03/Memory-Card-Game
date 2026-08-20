@@ -76,7 +76,24 @@ function App() {
       setIsLoading(true);
 
       try {
-        console.log("Fetching Pokémon...");
+        const ids = getRandomIds(12);
+        const requests = ids.map((id) =>
+          fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
+        );
+
+        const responses = await Promise.all(requests);
+
+        const pokemonData = await Promise.all(
+          responses.map((response) => response.json()),
+        );
+
+        const pokemonCards = pokemonData.map((pokemon) => ({
+          id: pokemon.id,
+          name: pokemon.name,
+          image: pokemon.sprites.other["official-artwork"].front_default,
+        }));
+
+        setCards(pokemonCards);
       } catch (error) {
         console.error("Failed to load Pokémon:", error);
       } finally {
@@ -86,7 +103,6 @@ function App() {
 
     fetchPokemon();
   }, []);
-
   return (
     <div className="app">
       <h1>Memory Card Game</h1>
