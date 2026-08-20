@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -59,6 +59,21 @@ function App() {
       }
     }
   }
+  useEffect(() => {
+    async function fetchPokemon() {
+      setIsLoading(true);
+
+      try {
+        console.log("Fetching Pokémon...");
+      } catch (error) {
+        console.error("Failed to load Pokémon:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchPokemon();
+  }, []);
 
   return (
     <div className="app">
