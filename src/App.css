@@ -1,63 +1,50 @@
 * {
-
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f2f4f8;
+  background: #eef2f7;
 }
 
 .app {
-  min-height: 100vh;
   padding: 30px;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-header h1 {
-  margin: 0;
-}
-
-header p {
-  margin: 5px 0;
-}
-
-main {
+h1 {
   text-align: center;
 }
 
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.score-board {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 25px;
+  font-weight: bold;
 }
 
 .game-board {
-  max-width: 900px;
-  margin: 30px auto;
-
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 20px;
 }
 
 .card {
-  background-color: white;
-  padding: 40px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
 }
