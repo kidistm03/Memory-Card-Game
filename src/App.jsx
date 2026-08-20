@@ -1,6 +1,18 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+function getRandomIds(count) {
+  const ids = [];
 
+  while (ids.length < count) {
+    const randomId = Math.floor(Math.random() * 898) + 1;
+
+    if (!ids.includes(randomId)) {
+      ids.push(randomId);
+    }
+  }
+
+  return ids;
+}
 function App() {
   // All Pokémon cards
   const [cards, setCards] = useState([]);
