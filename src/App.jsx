@@ -19,6 +19,15 @@ function App() {
 
   // Used while Pokémon are loading
   const [isLoading, setIsLoading] = useState(true);
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    return array;
+  }
 
   return (
     <div className="app">
