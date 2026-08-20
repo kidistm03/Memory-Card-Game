@@ -31,6 +31,13 @@ function App() {
 
   // Used while Pokémon are loading
   const [isLoading, setIsLoading] = useState(true);
+  // Current difficulty
+  const [difficulty, setDifficulty] = useState("medium");
+  const cardCounts = {
+  easy: 8,
+  medium: 12,
+  hard: 20,
+};
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -41,6 +48,11 @@ function App() {
     return array;
   }
   function handleCardClick(id) {
+    // Don't allow clicks after winning
+    if (gameStatus === "won") {
+      return;
+    }
+
     // The card was already clicked
     if (clickedIds.includes(id)) {
       if (score > bestScore) {
@@ -62,75 +74,111 @@ function App() {
 
       setCards((prev) => shuffle([...prev]));
 
+      // Start playing again after a game over
+      setGameStatus("playing");
+
+      if (newScore > bestScore) {
+        setBestScore(newScore);
+      }
+
       if (newScore === cards.length) {
         setGameStatus("won");
-
-        if (newScore > bestScore) {
-          setBestScore(newScore);
-        }
       }
     }
   }
   useEffect(() => {
-    async function fetchPokemon() {
-      setIsLoading(true);
+  async function fetchPokemon() {
+    setIsLoading(true);
 
-      try {
-        const ids = getRandomIds(12);
-        const requests = ids.map((id) =>
-          fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
-        );
+    // Reset the current game
+    setScore(0);
+    setClickedIds([]);
+    setGameStatus("playing");
 
-        const responses = await Promise.all(requests);
+    try {
+      // Get the number of cards for the selected difficulty
+      const numberOfCards = cardCounts[difficulty];
 
-        const pokemonData = await Promise.all(
-          responses.map((response) => response.json()),
-        );
+      // Get random Pokémon IDs
+      const ids = getRandomIds(numberOfCards);
 
-        const pokemonCards = pokemonData.map((pokemon) => ({
-          id: pokemon.id,
-          name: pokemon.name,
-          image: pokemon.sprites.other["official-artwork"].front_default,
-        }));
+      // Fetch all Pokémon
+      const requests = ids.map((id) =>
+        fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+      );
 
-        setCards(pokemonCards);
-        
-      } catch (error) {
-        console.error("Failed to load Pokémon:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      const responses = await Promise.all(requests);
+
+      // Convert responses to JSON
+      const pokemonData = await Promise.all(
+        responses.map((response) => response.json())
+      );
+
+      // Create the cards we need
+      const pokemonCards = pokemonData.map((pokemon) => ({
+        id: pokemon.id,
+        name: pokemon.name,
+        image:
+          pokemon.sprites.other["official-artwork"].front_default,
+      }));
+
+      setCards(pokemonCards);
+    } catch (error) {
+      console.error("Failed to load Pokémon:", error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    fetchPokemon();
-  }, []);
+  fetchPokemon();
+}, [difficulty]);
   return (
-  <div className="app">
-    <h1>Memory Card Game</h1>
+    <div className="app">
+      <h1>Memory Card Game</h1>
+      <div className="difficulty">
+  <p>Difficulty:</p>
 
-    <div className="score-board">
-      <p>Score: {score}</p>
-      <p>Best Score: {bestScore}</p>
-    </div>
+  <button onClick={() => setDifficulty("easy")}>
+    Easy
+  </button>
 
-    {isLoading ? (
-      <h2>Loading Pokémon...</h2>
-    ) : (
-      <div className="game-board">
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            className="card"
-            onClick={() => handleCardClick(card.id)}
-          >
-            <img src={card.image} alt={card.name} />
-            <h3>{card.name}</h3>
-          </div>
-        ))}
+  <button onClick={() => setDifficulty("medium")}>
+    Medium
+  </button>
+
+  <button onClick={() => setDifficulty("hard")}>
+    Hard
+  </button>
+</div>
+
+      <div className="score-board">
+        <p>Score: {score}</p>
+        <p>Best Score: {bestScore}</p>
       </div>
-    )}
-  </div>
-);
+      {/* to show win and lost messages  */}
+      {gameStatus === "won" && <h2>You Won!</h2>}
+      {gameStatus === "lost" && (
+        <h2>Game Over! Click a card to start again.</h2>
+      )}
+
+      {isLoading ? (
+        <h2>Loading Pokémon...</h2>
+      ) : (
+        <div className="game-board">
+          {cards.map((card) => (
+            <div
+              key={card.id}
+              className="card"
+              onClick={() => handleCardClick(card.id)}
+            >
+              <img src={card.image} alt={card.name} />
+              <h3>{card.name}</h3>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default App;
