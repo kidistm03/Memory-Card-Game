@@ -1,5 +1,15 @@
+import { useState } from "react";
 import "./App.css";
 function App() {
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+  function handleCardClick() {
+    const newScore = score + 1;
+    setScore(newScore);
+    if (newScore > bestScore) {
+      setBestScore(newScore);
+    }
+  }
   return (
     <div className="app">
 
@@ -7,8 +17,8 @@ function App() {
         <h1>Memory Card Game</h1>
 
         <div>
-          <p>Score: 0</p>
-          <p>Best Score: 0</p>
+          <p>Score: {score}</p>
+          <p>Best Score: {bestScore}</p>
         </div>
       </header>
 
@@ -20,7 +30,7 @@ function App() {
         <button>Hard</button>
 
         <div className="game-board">
-          <div className="card">
+          <div className="card" onClick={handleCardClick}>
             <h3>Pikachu</h3>
           </div>
 
