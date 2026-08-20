@@ -65,21 +65,15 @@ function App() {
         <button>Hard</button>
 
         <div className="game-board">
-          <div className="card" onClick={handleCardClick}>
-            <h3>Pikachu</h3>
-          </div>
-
-          <div className="card">
-            <h3>Bulbasaur</h3>
-          </div>
-
-          <div className="card">
-            <h3>Charmander</h3>
-          </div>
-
-          <div className="card">
-            <h3>Squirtle</h3>
-          </div>
+          {cards.map((card) => (
+            <div
+              className="card"
+              key={card.id}
+              onClick={() => handleCardClick(card.id)}
+            >
+              <h3>{card.name}</h3>
+            </div>
+          ))}
         </div>
       </main>
     </div>
