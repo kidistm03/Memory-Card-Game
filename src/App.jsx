@@ -39,9 +39,21 @@ function App() {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [clickedCards, setClickedCards] = useState([]);
-  function handleCardClick() {
+  function handleCardClick(cardId) {
+    //to check if this array already contain this card ID
+    if (clickedCards.includes(cardId)) {
+      console.log("Game Over!");
+      return;
+    }
+
     const newScore = score + 1;
+
     setScore(newScore);
+
+    setClickedCards([...clickedCards, cardId]);
+
+    console.log("Clicked cards:", clickedCards);
+
     if (newScore > bestScore) {
       setBestScore(newScore);
     }
