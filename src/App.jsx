@@ -1,5 +1,40 @@
 import { useState } from "react";
 import "./App.css";
+
+const cards = [
+  {
+    id: 1,
+    name: "Pikachu",
+  },
+  {
+    id: 2,
+    name: "Bulbasaur",
+  },
+  {
+    id: 3,
+    name: "Charmander",
+  },
+  {
+    id: 4,
+    name: "Squirtle",
+  },
+  {
+    id: 5,
+    name: "Eevee",
+  },
+  {
+    id: 6,
+    name: "Jigglypuff",
+  },
+  {
+    id: 7,
+    name: "Meowth",
+  },
+  {
+    id: 8,
+    name: "Psyduck",
+  },
+];
 function App() {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
@@ -13,7 +48,6 @@ function App() {
   }
   return (
     <div className="app">
-
       <header>
         <h1>Memory Card Game</h1>
 
@@ -48,7 +82,6 @@ function App() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }
